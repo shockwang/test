@@ -1,1 +1,434 @@
-This is a web site.
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RogueLike Dungeon Game</title>
+    <style>
+      :root {
+        --bg-primary: #0f111a;
+        --bg-panel: #181b28;
+        --bg-modal: #141724;
+        --border-color: #2e344e;
+        --text-primary: #e6e9f4;
+        --text-muted: #9aa2bf;
+        --accent: #6aa9ff;
+        --accent-gold: #f59e0b;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background-color: var(--bg-primary);
+        color: var(--text-primary);
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        overflow: hidden;
+      }
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 16px;
+        background-color: var(--bg-panel);
+        border-bottom: 1px solid var(--border-color);
+        font-size: 13px;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .stats-group {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      #character-name {
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--accent-gold);
+        padding: 2px 8px;
+        background: rgba(245, 158, 11, 0.12);
+        border: 1px solid rgba(245, 158, 11, 0.35);
+        border-radius: 4px;
+      }
+      #status-summary {
+        color: var(--text-primary);
+        font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        font-size: 12.5px;
+      }
+      .controls-bar {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      main {
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        position: relative;
+        overflow: hidden;
+        align-items: center;
+        justify-content: center;
+      }
+      #game-canvas {
+        display: block;
+        background-color: #07080d;
+        border: 1px solid var(--border-color);
+        image-rendering: pixelated;
+        cursor: crosshair;
+      }
+      footer#bottom-log-tab {
+        background-color: var(--bg-panel);
+        border-top: 1px solid var(--border-color);
+        padding: 6px 16px 8px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        height: 186px;
+        flex-shrink: 0;
+      }
+      .log-tab-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--accent);
+        border-bottom: 1px solid rgba(46, 52, 78, 0.6);
+        padding-bottom: 3px;
+      }
+      #message-log {
+        flex: 1;
+        overflow-y: hidden;
+        font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        font-size: 12px;
+        line-height: 15px;
+        color: var(--text-muted);
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+      }
+      .log-entry {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .log-entry.latest {
+        color: var(--text-primary);
+        font-weight: 500;
+      }
+      .log-entry .log-time {
+        color: #64748b;
+        margin-right: 6px;
+      }
+      /* Modal Overlays ('/' Large Log Tab & 'h' Controls Tab) */
+      .modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(7, 8, 13, 0.82);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 100;
+        padding: 24px;
+      }
+      .modal-overlay.hidden {
+        display: none;
+      }
+      .modal-card {
+        background: var(--bg-modal);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        width: min(860px, 92vw);
+        max-height: 82vh;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75);
+        overflow: hidden;
+      }
+      .modal-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 18px;
+        background: var(--bg-panel);
+        border-bottom: 1px solid var(--border-color);
+      }
+      .modal-title {
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--accent);
+      }
+      .modal-subtitle {
+        font-size: 12px;
+        color: var(--text-muted);
+      }
+      .modal-body {
+        padding: 14px 18px;
+        overflow-y: auto;
+        flex: 1;
+        font-size: 13px;
+        line-height: 1.55;
+      }
+      #log-modal-body {
+        font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      .modal-log-row {
+        padding: 3px 6px;
+        border-radius: 4px;
+        color: var(--text-muted);
+        word-break: break-word;
+      }
+      .modal-log-row:nth-child(odd) {
+        background: rgba(255, 255, 255, 0.02);
+      }
+      .modal-log-row.latest {
+        color: var(--text-primary);
+        font-weight: 600;
+        background: rgba(106, 169, 255, 0.1);
+      }
+      .controls-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      .controls-table th,
+      .controls-table td {
+        text-align: left;
+        padding: 10px 12px;
+        border-bottom: 1px solid rgba(46, 52, 78, 0.65);
+        vertical-align: top;
+      }
+      .controls-table th {
+        color: var(--accent);
+        font-weight: 600;
+        width: 34%;
+      }
+      .key-badge {
+        display: inline-block;
+        padding: 1px 6px;
+        font-family: 'JetBrains Mono', ui-monospace, monospace;
+        font-size: 12px;
+        color: var(--text-primary);
+        background: #23283c;
+        border: 1px solid #3b4363;
+        border-radius: 4px;
+        margin: 0 2px;
+      }
+      /* Item / Inventory / Pick Up / Drop Modal List */
+      #item-modal-body {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      }
+      .item-modal-empty {
+        padding: 16px 8px;
+        color: var(--text-muted);
+        text-align: center;
+      }
+      .item-modal-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 6px 10px;
+        border-radius: 6px;
+        border: 1px solid transparent;
+        background: rgba(255, 255, 255, 0.02);
+        color: var(--text-primary);
+        cursor: pointer;
+        user-select: none;
+      }
+      .item-modal-row:hover {
+        background: rgba(106, 169, 255, 0.08);
+      }
+      .item-modal-row.selected {
+        background: rgba(106, 169, 255, 0.16);
+        border-color: var(--accent);
+      }
+      .item-modal-main {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .item-modal-icon {
+        width: 24px;
+        height: 24px;
+        image-rendering: pixelated;
+        flex-shrink: 0;
+      }
+      .item-modal-label {
+        font-size: 13.5px;
+        font-weight: 500;
+      }
+      .item-modal-weight {
+        font-size: 12px;
+        color: var(--text-muted);
+      }
+      .item-modal-right {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .item-all-btn {
+        background: #23283c;
+        color: var(--accent);
+        border: 1px solid #3b4363;
+        border-radius: 4px;
+        padding: 2px 8px;
+        font-size: 11.5px;
+        font-family: inherit;
+        cursor: pointer;
+      }
+      .item-all-btn:hover {
+        background: rgba(106, 169, 255, 0.2);
+        border-color: var(--accent);
+      }
+      /* Action Menu Modal Tab ('Esc' or Right-Click on main screen) */
+      #action-modal-body {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .action-modal-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 9px 12px;
+        border-radius: 6px;
+        border: 1px solid rgba(46, 52, 78, 0.65);
+        background: rgba(255, 255, 255, 0.02);
+        color: var(--text-primary);
+        cursor: pointer;
+        user-select: none;
+      }
+      .action-modal-row:hover {
+        background: rgba(106, 169, 255, 0.09);
+      }
+      .action-modal-row.selected {
+        background: rgba(106, 169, 255, 0.16);
+        border-color: var(--accent);
+      }
+      .action-modal-main {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .action-modal-label {
+        font-size: 13.5px;
+        font-weight: 500;
+      }
+      .action-modal-context {
+        font-size: 12px;
+        color: var(--text-muted);
+        font-family: 'JetBrains Mono', ui-monospace, monospace;
+      }
+      /* Config Modal Tab */
+      #config-modal-body {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+      .config-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 12px;
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(46, 52, 78, 0.65);
+        border-radius: 6px;
+        gap: 16px;
+      }
+      .config-row-label {
+        font-weight: 500;
+        color: var(--text-primary);
+      }
+    </style>
+    <script type="module" crossorigin src="./assets/index-BYPFPGHm.js"></script>
+  </head>
+  <body>
+    <header>
+      <div class="stats-group">
+        <span id="character-name">Howard</span>
+        <span id="status-summary">Initializing...</span>
+      </div>
+      <div class="controls-bar" id="hud-controls"></div>
+    </header>
+    <main>
+      <canvas id="game-canvas" width="800" height="600"></canvas>
+
+      <!-- Large Scrollable Log Modal Tab (Open: '/', Close: 'Esc') -->
+      <div id="log-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="log-modal-title">
+        <div class="modal-card">
+          <div class="modal-header">
+            <span id="log-modal-title" class="modal-title">Log History</span>
+            <span id="log-modal-subtitle" class="modal-subtitle">Scroll: ↑/↓ (Slow) · PageUp/PageDown (Page) · Mouse Wheel | Close: Esc</span>
+          </div>
+          <div id="log-modal-body" class="modal-body" tabindex="-1"></div>
+        </div>
+      </div>
+
+      <!-- Consolidated Controls / Help Modal Tab (Open: 'h', Close: 'Esc') -->
+      <div id="help-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="help-modal-title">
+        <div class="modal-card">
+          <div class="modal-header">
+            <span id="help-modal-title" class="modal-title">Controls &amp; Shortcuts</span>
+            <span id="help-modal-subtitle" class="modal-subtitle">Close: Esc</span>
+          </div>
+          <div id="help-modal-body" class="modal-body">
+            <table class="controls-table">
+              <tbody id="help-modal-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item Modal Tab: Inventory ('i'), Pick Up ('g'), and Drop ('d') (Close: 'Esc') -->
+      <div id="item-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="item-modal-title">
+        <div class="modal-card">
+          <div class="modal-header">
+            <span id="item-modal-title" class="modal-title">Inventory</span>
+            <span id="item-modal-subtitle" class="modal-subtitle">Close: Esc</span>
+          </div>
+          <div id="item-modal-body" class="modal-body" tabindex="-1"></div>
+        </div>
+      </div>
+
+      <!-- Config Modal Tab (Opened via Top-Right Config Button, Close: 'Esc') -->
+      <div id="config-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="config-modal-title">
+        <div class="modal-card">
+          <div class="modal-header">
+            <span id="config-modal-title" class="modal-title">Configuration</span>
+            <span id="config-modal-subtitle" class="modal-subtitle">Close: Esc</span>
+          </div>
+          <div id="config-modal-body" class="modal-body" tabindex="-1"></div>
+        </div>
+      </div>
+
+      <!-- Action Menu Modal Tab (Opened via 'Esc' or Right-Click on Main Screen, Close: 'Esc' / Right-Click) -->
+      <div id="action-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="action-modal-title">
+        <div class="modal-card">
+          <div class="modal-header">
+            <span id="action-modal-title" class="modal-title">Actions</span>
+            <span id="action-modal-subtitle" class="modal-subtitle">Close: Esc / Right-Click</span>
+          </div>
+          <div id="action-modal-body" class="modal-body" tabindex="-1"></div>
+        </div>
+      </div>
+    </main>
+    <footer id="bottom-log-tab">
+      <div class="log-tab-header">
+        <span id="bottom-log-title">Log</span>
+      </div>
+      <div id="message-log"></div>
+    </footer>
+  </body>
+</html>
