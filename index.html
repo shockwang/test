@@ -223,7 +223,61 @@
         border-radius: 4px;
         margin: 0 2px;
       }
-      /* Item / Inventory / Pick Up / Drop Modal List */
+      /* Item / Inventory / Pick Up / Drop Modal Stack & Upper Description Tab */
+      .item-modal-stack {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: min(760px, 92%);
+        max-height: 86%;
+      }
+      .item-desc-card {
+        width: 100%;
+        flex-shrink: 0;
+      }
+      .item-list-card {
+        width: 100%;
+        flex: 1;
+        min-height: 0;
+      }
+      #item-desc-body {
+        padding: 12px 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .item-desc-header-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      .item-desc-title-group {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .item-desc-name {
+        font-weight: 700;
+        font-size: 14px;
+        color: var(--accent);
+      }
+      .item-desc-meta {
+        font-size: 12px;
+        color: var(--text-muted);
+        font-family: 'JetBrains Mono', ui-monospace, monospace;
+      }
+      .item-desc-text {
+        font-size: 13px;
+        line-height: 1.5;
+        color: var(--text-primary);
+      }
+      .item-desc-empty {
+        font-size: 13px;
+        color: var(--text-muted);
+        text-align: center;
+        padding: 4px 0;
+      }
       #item-modal-body {
         display: flex;
         flex-direction: column;
@@ -351,8 +405,115 @@
         font-weight: 500;
         color: var(--text-primary);
       }
+      /* Game Over Modal Tab ('#gameover-modal') */
+      .gameover-card {
+        border-color: #ef4444;
+        box-shadow: 0 18px 48px rgba(0, 0, 0, 0.8), 0 0 24px rgba(239, 68, 68, 0.22);
+      }
+      #gameover-modal-title {
+        color: #f87171;
+        font-size: 18px;
+        letter-spacing: 0.06em;
+      }
+      #gameover-modal-body {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .gameover-score-banner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        padding: 12px 16px;
+        border-radius: 8px;
+        background: rgba(239, 68, 68, 0.1);
+        border: 1px solid rgba(248, 113, 113, 0.45);
+      }
+      .gameover-score-label {
+        font-size: 12.5px;
+        font-weight: 600;
+        color: #fca5a5;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      .gameover-score-value {
+        font-size: 28px;
+        font-weight: 800;
+        color: #fbbf24;
+        font-family: 'JetBrains Mono', ui-monospace, monospace;
+      }
+      .gameover-score-breakdown {
+        font-size: 11.5px;
+        color: var(--text-muted);
+        font-family: 'JetBrains Mono', ui-monospace, monospace;
+      }
+      .gameover-stats-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .gameover-stat-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 7px 12px;
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.025);
+        border: 1px solid rgba(46, 52, 78, 0.65);
+        font-size: 13px;
+      }
+      .gameover-stat-label {
+        color: var(--text-muted);
+        font-weight: 500;
+      }
+      .gameover-stat-value {
+        color: var(--text-primary);
+        font-weight: 600;
+        font-family: 'JetBrains Mono', ui-monospace, monospace;
+      }
+      .gameover-log-box {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        padding: 8px 12px;
+        border-radius: 6px;
+        background: rgba(9, 10, 15, 0.65);
+        border: 1px solid rgba(46, 52, 78, 0.65);
+      }
+      .gameover-log-title {
+        font-size: 11.5px;
+        font-weight: 600;
+        color: var(--text-muted);
+        margin-bottom: 2px;
+      }
+      .gameover-log-line {
+        font-size: 12px;
+        color: var(--text-primary);
+        font-family: 'JetBrains Mono', ui-monospace, monospace;
+      }
+      .gameover-actions-row {
+        display: flex;
+        justify-content: center;
+        padding-top: 4px;
+      }
+      .gameover-restart-btn {
+        background: #dc2626;
+        color: #ffffff;
+        border: 1px solid #f87171;
+        border-radius: 6px;
+        padding: 9px 20px;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        width: 100%;
+      }
+      .gameover-restart-btn:hover {
+        background: #ef4444;
+      }
     </style>
-    <script type="module" crossorigin src="./assets/index-BYPFPGHm.js"></script>
+    <script type="module" crossorigin src="./assets/index-D6m8U-Uq.js"></script>
   </head>
   <body>
     <header>
@@ -393,12 +554,19 @@
 
       <!-- Item Modal Tab: Inventory ('i'), Pick Up ('g'), and Drop ('d') (Close: 'Esc') -->
       <div id="item-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="item-modal-title">
-        <div class="modal-card">
-          <div class="modal-header">
-            <span id="item-modal-title" class="modal-title">Inventory</span>
-            <span id="item-modal-subtitle" class="modal-subtitle">Close: Esc</span>
+        <div class="item-modal-stack">
+          <!-- Upper Item Description Tab -->
+          <div id="item-desc-box" class="modal-card item-desc-card">
+            <div id="item-desc-body"></div>
           </div>
-          <div id="item-modal-body" class="modal-body" tabindex="-1"></div>
+          <!-- Lower Item List Tab -->
+          <div id="item-list-box" class="modal-card item-list-card">
+            <div class="modal-header">
+              <span id="item-modal-title" class="modal-title">Inventory</span>
+              <span id="item-modal-subtitle" class="modal-subtitle">Close: Esc</span>
+            </div>
+            <div id="item-modal-body" class="modal-body" tabindex="-1"></div>
+          </div>
         </div>
       </div>
 
@@ -421,6 +589,17 @@
             <span id="action-modal-subtitle" class="modal-subtitle">Close: Esc / Right-Click</span>
           </div>
           <div id="action-modal-body" class="modal-body" tabindex="-1"></div>
+        </div>
+      </div>
+
+      <!-- Game Over Modal Tab (Opened automatically when Player HP <= 0, Restart: 'Esc' / Right-Click / Button) -->
+      <div id="gameover-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="gameover-modal-title">
+        <div class="modal-card gameover-card">
+          <div class="modal-header">
+            <span id="gameover-modal-title" class="modal-title">GAME OVER</span>
+            <span id="gameover-modal-subtitle" class="modal-subtitle">Press Esc to start a new dungeon</span>
+          </div>
+          <div id="gameover-modal-body" class="modal-body" tabindex="-1"></div>
         </div>
       </div>
     </main>
