@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>RogueLike Dungeon Game</title>
+    <title>BioHoward</title>
     <style>
       :root {
         --bg-primary: #0f111a;
@@ -512,8 +512,219 @@
       .gameover-restart-btn:hover {
         background: #ef4444;
       }
+      /* Title Screen Mode & Overlay ('BioHoward') */
+      body.title-mode header,
+      body.title-mode footer#bottom-log-tab {
+        display: none;
+      }
+      body.title-mode #game-canvas {
+        cursor: default;
+      }
+      #title-screen-overlay {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at center, rgba(15, 17, 26, 0.55) 0%, rgba(7, 8, 13, 0.84) 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 90;
+        padding: 24px;
+      }
+      #title-screen-overlay.hidden {
+        display: none;
+      }
+      .title-screen-card {
+        background: rgba(20, 23, 36, 0.92);
+        border: 1px solid rgba(106, 169, 255, 0.45);
+        border-radius: 12px;
+        width: min(440px, 90vw);
+        padding: 32px 28px 24px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 18px;
+        box-shadow: 0 24px 64px rgba(0, 0, 0, 0.85), 0 0 36px rgba(106, 169, 255, 0.14);
+        backdrop-filter: blur(4px);
+      }
+      .title-brand-group {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        text-align: center;
+      }
+      #title-screen-heading {
+        font-size: 40px;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        color: var(--accent-gold);
+        text-shadow: 0 4px 18px rgba(245, 158, 11, 0.35);
+      }
+      #title-screen-tagline {
+        font-size: 13px;
+        color: var(--text-muted);
+        letter-spacing: 0.04em;
+      }
+      #title-screen-menu {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 6px;
+      }
+      .title-menu-btn {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 16px;
+        border-radius: 8px;
+        border: 1px solid var(--border-color);
+        background: rgba(255, 255, 255, 0.03);
+        color: var(--text-primary);
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        user-select: none;
+        transition: background 0.12s ease, border-color 0.12s ease;
+      }
+      .title-menu-btn:hover {
+        background: rgba(106, 169, 255, 0.12);
+      }
+      .title-menu-btn.selected {
+        background: rgba(106, 169, 255, 0.2);
+        border-color: var(--accent);
+        color: #ffffff;
+      }
+      .title-menu-badge {
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--accent);
+        font-family: 'JetBrains Mono', ui-monospace, monospace;
+      }
+      #title-screen-hint {
+        font-size: 11.5px;
+        color: var(--text-muted);
+        text-align: center;
+      }
+      /* Save Confirmation Modal ('S') */
+      .save-confirm-card {
+        width: min(500px, 92vw);
+      }
+      #save-confirm-body {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+      .save-confirm-prompt {
+        font-size: 14.5px;
+        color: var(--text-primary);
+        text-align: center;
+        padding: 6px 0;
+      }
+      .save-confirm-buttons {
+        display: flex;
+        gap: 12px;
+      }
+      .save-confirm-btn {
+        flex: 1;
+        padding: 10px 14px;
+        border-radius: 6px;
+        border: 1px solid var(--border-color);
+        background: rgba(255, 255, 255, 0.04);
+        color: var(--text-primary);
+        font-size: 13.5px;
+        font-weight: 600;
+        cursor: pointer;
+        text-align: center;
+      }
+      .save-confirm-btn:hover {
+        background: rgba(106, 169, 255, 0.12);
+      }
+      .save-confirm-btn.selected {
+        background: rgba(106, 169, 255, 0.22);
+        border-color: var(--accent);
+        color: #ffffff;
+      }
+      /* Save List Modal ('Load Game') */
+      #savelist-modal-body {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .savelist-empty {
+        padding: 24px 12px;
+        text-align: center;
+        color: var(--text-muted);
+        font-size: 13.5px;
+      }
+      .savelist-row {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        padding: 12px 14px;
+        border-radius: 8px;
+        border: 1px solid rgba(46, 52, 78, 0.75);
+        background: rgba(255, 255, 255, 0.025);
+        cursor: pointer;
+        user-select: none;
+      }
+      .savelist-row:hover {
+        background: rgba(106, 169, 255, 0.08);
+      }
+      .savelist-row.selected {
+        background: rgba(106, 169, 255, 0.16);
+        border-color: var(--accent);
+      }
+      .savelist-row-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .savelist-row-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 700;
+        font-size: 14px;
+        color: var(--accent-gold);
+      }
+      .savelist-row-generator {
+        font-size: 12.5px;
+        font-weight: 500;
+        color: var(--accent);
+      }
+      .savelist-row-meta {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 12px;
+        color: var(--text-muted);
+        font-family: 'JetBrains Mono', ui-monospace, monospace;
+      }
+      .savelist-row-stats {
+        font-size: 12px;
+        color: var(--text-primary);
+        font-family: 'JetBrains Mono', ui-monospace, monospace;
+      }
+      .savelist-delete-btn {
+        background: rgba(239, 68, 68, 0.14);
+        color: #fca5a5;
+        border: 1px solid rgba(248, 113, 113, 0.45);
+        border-radius: 4px;
+        padding: 2px 8px;
+        font-size: 11.5px;
+        font-family: inherit;
+        cursor: pointer;
+      }
+      .savelist-delete-btn:hover {
+        background: rgba(239, 68, 68, 0.3);
+        color: #ffffff;
+      }
     </style>
-    <script type="module" crossorigin src="./assets/index-CamtSZgE.js"></script>
+    <script type="module" crossorigin src="./assets/index-CBJ0PDob.js"></script>
   </head>
   <body>
     <header>
@@ -530,7 +741,7 @@
       <div id="log-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="log-modal-title">
         <div class="modal-card">
           <div class="modal-header">
-            <span id="log-modal-title" class="modal-title">Log History</span>
+            <span id="log-modal-title" class="modal-title">Log History (Only keeps the latest 500 logs)</span>
             <span id="log-modal-subtitle" class="modal-subtitle">Scroll: ↑/↓ (Slow) · PageUp/PageDown (Page) · Mouse Wheel | Close: Esc</span>
           </div>
           <div id="log-modal-body" class="modal-body" tabindex="-1"></div>
@@ -592,14 +803,48 @@
         </div>
       </div>
 
-      <!-- Game Over Modal Tab (Opened automatically when Player HP <= 0, Restart: 'Esc' / Right-Click / Button) -->
+      <!-- Game Over Modal Tab (Opened automatically when Player HP <= 0, Return to Title: 'Esc' / Right-Click / Button) -->
       <div id="gameover-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="gameover-modal-title">
         <div class="modal-card gameover-card">
           <div class="modal-header">
             <span id="gameover-modal-title" class="modal-title">GAME OVER</span>
-            <span id="gameover-modal-subtitle" class="modal-subtitle">Press Esc to start a new dungeon</span>
+            <span id="gameover-modal-subtitle" class="modal-subtitle">Press Esc to return to the Title Screen</span>
           </div>
           <div id="gameover-modal-body" class="modal-body" tabindex="-1"></div>
+        </div>
+      </div>
+
+      <!-- Save Confirmation Modal Tab (Opened via uppercase 'S' or Actions Menu) -->
+      <div id="save-confirm-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="save-confirm-title">
+        <div class="modal-card save-confirm-card">
+          <div class="modal-header">
+            <span id="save-confirm-title" class="modal-title">Save Game</span>
+            <span id="save-confirm-subtitle" class="modal-subtitle">Confirm: Y / Enter | Cancel: N / Esc</span>
+          </div>
+          <div id="save-confirm-body" class="modal-body" tabindex="-1"></div>
+        </div>
+      </div>
+
+      <!-- Save List Modal Tab (Opened via 'Load Game' on Title Screen) -->
+      <div id="savelist-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="savelist-modal-title">
+        <div class="modal-card">
+          <div class="modal-header">
+            <span id="savelist-modal-title" class="modal-title">Load Game</span>
+            <span id="savelist-modal-subtitle" class="modal-subtitle">Back: Esc / Right-Click</span>
+          </div>
+          <div id="savelist-modal-body" class="modal-body" tabindex="-1"></div>
+        </div>
+      </div>
+
+      <!-- BioHoward Title Screen Overlay (Shown over randomly generated background dungeon) -->
+      <div id="title-screen-overlay" class="hidden" role="dialog" aria-modal="true" aria-labelledby="title-screen-heading">
+        <div class="title-screen-card">
+          <div class="title-brand-group">
+            <h1 id="title-screen-heading">BioHoward</h1>
+            <p id="title-screen-tagline">Tactical Roguelike Dungeon Crawler</p>
+          </div>
+          <div id="title-screen-menu"></div>
+          <p id="title-screen-hint">↑/↓ to Select · Enter or Click to Confirm</p>
         </div>
       </div>
     </main>
