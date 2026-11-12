@@ -42,6 +42,13 @@
       }
       .stats-group {
         display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 3px;
+        min-width: 0;
+      }
+      .stats-primary-row {
+        display: flex;
         align-items: center;
         gap: 12px;
         flex-wrap: wrap;
@@ -59,6 +66,47 @@
         color: var(--text-primary);
         font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
         font-size: 12.5px;
+      }
+      .stat-debuffed {
+        color: #f87171;
+        font-weight: 700;
+      }
+      #special-effects-row {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        min-height: 19px;
+        flex-wrap: wrap;
+      }
+      .effect-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 1px 7px;
+        border-radius: 4px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.03em;
+        line-height: 1.35;
+      }
+      .effect-badge.effect-buff {
+        background: rgba(16, 185, 129, 0.16);
+        color: #34d399;
+        border: 1px solid rgba(52, 211, 153, 0.45);
+      }
+      .effect-badge.effect-warning {
+        background: rgba(245, 158, 11, 0.16);
+        color: #fbbf24;
+        border: 1px solid rgba(251, 191, 36, 0.45);
+      }
+      .effect-badge.effect-debuff {
+        background: rgba(249, 115, 22, 0.18);
+        color: #fb923c;
+        border: 1px solid rgba(251, 146, 60, 0.5);
+      }
+      .effect-badge.effect-critical {
+        background: rgba(239, 68, 68, 0.22);
+        color: #fca5a5;
+        border: 1px solid rgba(248, 113, 113, 0.65);
       }
       .controls-bar {
         display: flex;
@@ -724,13 +772,16 @@
         color: #ffffff;
       }
     </style>
-    <script type="module" crossorigin src="./assets/index-CBJ0PDob.js"></script>
+    <script type="module" crossorigin src="./assets/index-RqPTqzR9.js"></script>
   </head>
   <body>
     <header>
       <div class="stats-group">
-        <span id="character-name">Howard</span>
-        <span id="status-summary">Initializing...</span>
+        <div class="stats-primary-row">
+          <span id="character-name">Howard</span>
+          <span id="status-summary">Initializing...</span>
+        </div>
+        <div id="special-effects-row" aria-live="polite"></div>
       </div>
       <div class="controls-bar" id="hud-controls"></div>
     </header>
