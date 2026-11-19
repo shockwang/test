@@ -279,14 +279,131 @@
         width: min(760px, 92%);
         max-height: 86%;
       }
+      .item-modal-stack.craft-mode-wide {
+        width: min(980px, 95%);
+      }
+      .item-lower-row {
+        display: flex;
+        gap: 10px;
+        flex: 1;
+        min-height: 0;
+        width: 100%;
+      }
       .item-desc-card {
         width: 100%;
         flex-shrink: 0;
       }
       .item-list-card {
         width: 100%;
-        flex: 1;
+        flex: 1.35;
         min-height: 0;
+      }
+      .craft-side-card {
+        flex: 1;
+        min-width: 270px;
+        max-width: 380px;
+        min-height: 0;
+      }
+      .craft-side-card.hidden {
+        display: none;
+      }
+      .item-modal-row.dimmed {
+        opacity: 0.62;
+      }
+      .craft-side-section-title {
+        font-size: 11.5px;
+        font-weight: 700;
+        color: var(--accent-gold);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        margin: 8px 0 4px;
+      }
+      .craft-side-section-title:first-child {
+        margin-top: 0;
+      }
+      .craft-req-list,
+      .craft-stack-list {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        font-family: 'JetBrains Mono', ui-monospace, monospace;
+        font-size: 12px;
+      }
+      .craft-req-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 5px 8px;
+        border-radius: 5px;
+        background: rgba(255, 255, 255, 0.025);
+        border: 1px solid rgba(46, 52, 78, 0.65);
+        gap: 8px;
+      }
+      .craft-req-row.satisfied {
+        background: rgba(16, 185, 129, 0.12);
+        border-color: rgba(52, 211, 153, 0.45);
+        color: #6ee7b7;
+      }
+      .craft-stack-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 4px 8px;
+        border-radius: 5px;
+        background: rgba(106, 169, 255, 0.08);
+        border: 1px solid rgba(106, 169, 255, 0.28);
+        gap: 8px;
+      }
+      .craft-stack-row.top-of-stack {
+        border-color: var(--accent-gold);
+        background: rgba(245, 158, 11, 0.12);
+      }
+      .craft-stack-empty {
+        color: var(--text-muted);
+        font-size: 12px;
+        padding: 4px 2px;
+      }
+      .equip-stat-list {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        font-family: 'JetBrains Mono', ui-monospace, monospace;
+        font-size: 12px;
+      }
+      .equip-stat-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 3px 8px;
+        border-radius: 5px;
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(46, 52, 78, 0.55);
+        gap: 8px;
+        color: var(--text-muted);
+      }
+      .equip-stat-row.stat-up {
+        background: rgba(16, 185, 129, 0.14);
+        border-color: rgba(52, 211, 153, 0.5);
+        color: #6bcf7f;
+        font-weight: 600;
+      }
+      .equip-stat-row.stat-down {
+        background: rgba(239, 68, 68, 0.14);
+        border-color: rgba(248, 113, 113, 0.5);
+        color: #ff6b6b;
+        font-weight: 600;
+      }
+      .equip-stat-row.stat-changed {
+        background: rgba(106, 169, 255, 0.12);
+        border-color: rgba(106, 169, 255, 0.45);
+        color: var(--accent);
+        font-weight: 600;
+      }
+      .equip-stat-label {
+        flex-shrink: 0;
+      }
+      .equip-stat-value {
+        text-align: right;
       }
       #item-desc-body {
         padding: 12px 16px;
@@ -772,7 +889,7 @@
         color: #ffffff;
       }
     </style>
-    <script type="module" crossorigin src="./assets/index-BwnvAAoJ.js"></script>
+    <script type="module" crossorigin src="./assets/index-7IH899aK.js"></script>
   </head>
   <body>
     <header>
@@ -814,20 +931,28 @@
         </div>
       </div>
 
-      <!-- Item Modal Tab: Inventory ('i'), Pick Up ('g'), and Drop ('d') (Close: 'Esc') -->
+      <!-- Item Modal Tab: Inventory ('i'), Pick Up ('g'), Drop ('d'), Eat ('e'), Quaff ('q'), Throw ('f'), and Make ('m') -->
       <div id="item-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="item-modal-title">
-        <div class="item-modal-stack">
+        <div id="item-modal-stack" class="item-modal-stack">
           <!-- Upper Item Description Tab -->
           <div id="item-desc-box" class="modal-card item-desc-card">
             <div id="item-desc-body"></div>
           </div>
-          <!-- Lower Item List Tab -->
-          <div id="item-list-box" class="modal-card item-list-card">
-            <div class="modal-header">
-              <span id="item-modal-title" class="modal-title">Inventory</span>
-              <span id="item-modal-subtitle" class="modal-subtitle">Close: Esc</span>
+          <!-- Lower Row: Main Item/Recipe List + Optional Crafting Side Progress Tab -->
+          <div class="item-lower-row">
+            <div id="item-list-box" class="modal-card item-list-card">
+              <div class="modal-header">
+                <span id="item-modal-title" class="modal-title">Inventory</span>
+                <span id="item-modal-subtitle" class="modal-subtitle">Close: Esc</span>
+              </div>
+              <div id="item-modal-body" class="modal-body" tabindex="-1"></div>
             </div>
-            <div id="item-modal-body" class="modal-body" tabindex="-1"></div>
+            <div id="craft-side-panel" class="modal-card craft-side-card hidden">
+              <div class="modal-header">
+                <span id="craft-side-title" class="modal-title">Crafting Table</span>
+              </div>
+              <div id="craft-side-body" class="modal-body" tabindex="-1"></div>
+            </div>
           </div>
         </div>
       </div>
