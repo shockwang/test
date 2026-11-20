@@ -78,6 +78,62 @@
         min-height: 19px;
         flex-wrap: wrap;
       }
+      #hotkeys-row {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        height: 20px;
+        min-height: 20px;
+        max-height: 20px;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        scrollbar-width: none;
+      }
+      #hotkeys-row::-webkit-scrollbar {
+        display: none;
+      }
+      .hotkey-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        height: 18px;
+        padding: 0 7px;
+        border-radius: 4px;
+        font-size: 11px;
+        font-weight: 600;
+        font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        line-height: 1;
+        white-space: nowrap;
+        cursor: pointer;
+        user-select: none;
+        background: rgba(255, 255, 255, 0.04);
+        color: var(--text-primary);
+        border: 1px solid var(--border-color);
+        transition: background 0.1s ease, border-color 0.1s ease, opacity 0.1s ease;
+      }
+      .hotkey-pill.hotkey-war {
+        border-color: rgba(245, 158, 11, 0.45);
+        background: rgba(245, 158, 11, 0.1);
+      }
+      .hotkey-pill.hotkey-magic {
+        border-color: rgba(52, 211, 153, 0.45);
+        background: rgba(52, 211, 153, 0.1);
+      }
+      .hotkey-pill:hover {
+        background: rgba(106, 169, 255, 0.2);
+        border-color: var(--accent);
+      }
+      .hotkey-pill.hotkey-targeting {
+        border-color: #ffffff;
+        box-shadow: 0 0 0 1px rgba(106, 169, 255, 0.65);
+      }
+      .hotkey-pill.hotkey-dimmed {
+        opacity: 0.45;
+      }
+      .hotkey-pill-key {
+        color: var(--accent-gold);
+        font-weight: 800;
+      }
       .effect-badge {
         display: inline-flex;
         align-items: center;
@@ -448,6 +504,44 @@
         flex-direction: column;
         gap: 6px;
         font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      }
+      .item-modal-tabs {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 18px 6px;
+        background: rgba(18, 22, 34, 0.7);
+        border-bottom: 1px solid var(--border-color);
+      }
+      .item-modal-tabs.hidden {
+        display: none;
+      }
+      .item-subtab-btn {
+        background: rgba(255, 255, 255, 0.03);
+        color: var(--text-muted);
+        border: 1px solid rgba(59, 67, 99, 0.75);
+        border-radius: 6px;
+        padding: 4px 12px;
+        font-size: 12.5px;
+        font-weight: 600;
+        font-family: inherit;
+        cursor: pointer;
+        user-select: none;
+      }
+      .item-subtab-btn:hover {
+        color: var(--text-primary);
+        border-color: var(--accent);
+      }
+      .item-subtab-btn.active {
+        background: rgba(106, 169, 255, 0.18);
+        color: var(--accent);
+        border-color: var(--accent);
+      }
+      .item-subtab-hint {
+        margin-left: auto;
+        font-size: 11.5px;
+        color: var(--text-muted);
+        font-family: 'JetBrains Mono', ui-monospace, monospace;
       }
       #item-modal-body.two-col-grid {
         display: grid;
@@ -906,7 +1000,7 @@
         color: #ffffff;
       }
     </style>
-    <script type="module" crossorigin src="./assets/index-C-PZpoW5.js"></script>
+    <script type="module" crossorigin src="./assets/index-DBiA3HlY.js"></script>
   </head>
   <body>
     <header>
@@ -916,6 +1010,7 @@
           <span id="status-summary">Initializing...</span>
         </div>
         <div id="special-effects-row" aria-live="polite"></div>
+        <div id="hotkeys-row" aria-label="Skill Hotkeys"></div>
       </div>
       <div class="controls-bar" id="hud-controls"></div>
     </header>
@@ -962,6 +1057,7 @@
                 <span id="item-modal-title" class="modal-title">Inventory</span>
                 <span id="item-modal-subtitle" class="modal-subtitle">Close: Esc</span>
               </div>
+              <div id="item-modal-tabs" class="item-modal-tabs hidden"></div>
               <div id="item-modal-body" class="modal-body" tabindex="-1"></div>
             </div>
             <div id="craft-side-panel" class="modal-card craft-side-card hidden">
