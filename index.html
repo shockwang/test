@@ -281,6 +281,8 @@
         padding: 14px 18px;
         overflow-y: auto;
         flex: 1;
+        min-height: 0;
+        position: relative;
         font-size: 13px;
         line-height: 1.55;
       }
@@ -337,7 +339,7 @@
         flex-direction: column;
         gap: 10px;
         width: min(880px, 94%);
-        max-height: 86%;
+        max-height: 86vh;
       }
       .item-modal-stack.craft-mode-wide {
         width: min(1120px, 96%);
@@ -347,6 +349,7 @@
         gap: 10px;
         flex: 1;
         min-height: 0;
+        overflow: hidden;
         width: 100%;
       }
       .item-desc-card {
@@ -357,12 +360,14 @@
         width: 100%;
         flex: 1.35;
         min-height: 0;
+        max-height: 100%;
       }
       .craft-side-card {
         flex: 1;
         min-width: 270px;
         max-width: 380px;
         min-height: 0;
+        max-height: 100%;
       }
       .craft-side-card.hidden {
         display: none;
@@ -1004,7 +1009,7 @@
         color: #ffffff;
       }
     </style>
-    <script type="module" crossorigin src="./assets/index-D2iTXxPZ.js"></script>
+    <script type="module" crossorigin src="./assets/index-Bt36IhkO.js"></script>
   </head>
   <body>
     <header>
