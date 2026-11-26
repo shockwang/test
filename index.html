@@ -1008,8 +1008,200 @@
         background: rgba(239, 68, 68, 0.3);
         color: #ffffff;
       }
+      .hidden {
+        display: none !important;
+      }
+      /* Tutorial Objective Bar & Reusable Pop-Up Dialog (#tutorial-objective-bar, #dialog-modal) */
+      #tutorial-objective-bar {
+        position: absolute;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 18;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        width: min(860px, calc(100% - 28px));
+        padding: 7px 14px;
+        border-radius: 8px;
+        border: 1px solid rgba(106, 169, 255, 0.48);
+        background: rgba(15, 19, 32, 0.9);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.55);
+        backdrop-filter: blur(4px);
+        pointer-events: none;
+      }
+      #tutorial-objective-bar.hidden {
+        display: none;
+      }
+      .tutorial-obj-left {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13.5px;
+        color: var(--text-primary);
+        line-height: 1.35;
+      }
+      .tutorial-obj-step {
+        font-weight: 700;
+        color: var(--accent-gold);
+        white-space: nowrap;
+      }
+      .tutorial-obj-actions {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        flex-shrink: 0;
+      }
+      .tutorial-bar-btn {
+        background: rgba(106, 169, 255, 0.14);
+        color: #dbeafe;
+        border: 1px solid rgba(106, 169, 255, 0.45);
+        border-radius: 5px;
+        padding: 3px 9px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        white-space: nowrap;
+        pointer-events: auto;
+      }
+      .tutorial-bar-btn:hover {
+        background: rgba(106, 169, 255, 0.28);
+        color: #ffffff;
+      }
+      .tutorial-badge-rec {
+        display: inline-block;
+        padding: 1px 7px;
+        border-radius: 999px;
+        font-size: 11px;
+        font-weight: 700;
+        background: rgba(250, 204, 21, 0.18);
+        color: #fde047;
+        border: 1px solid rgba(250, 204, 21, 0.45);
+      }
+      .tutorial-badge-done {
+        display: inline-block;
+        padding: 1px 7px;
+        border-radius: 999px;
+        font-size: 11px;
+        font-weight: 700;
+        background: rgba(74, 222, 128, 0.16);
+        color: #4ade80;
+        border: 1px solid rgba(74, 222, 128, 0.45);
+      }
+      #dialog-modal {
+        position: absolute;
+        inset: 0;
+        z-index: 26;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        padding: 18px 16px 22px;
+        background: linear-gradient(
+          to bottom,
+          rgba(8, 10, 18, 0.08) 0%,
+          rgba(8, 10, 18, 0.26) 55%,
+          rgba(8, 10, 18, 0.58) 100%
+        );
+      }
+      #dialog-modal.hidden {
+        display: none;
+      }
+      .dialog-card {
+        width: min(760px, 95%);
+        background: rgba(18, 22, 36, 0.96);
+        border: 1.5px solid rgba(106, 169, 255, 0.65);
+        border-radius: 10px;
+        padding: 14px 18px;
+        box-shadow: 0 14px 36px rgba(0, 0, 0, 0.72);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .dialog-card.clickable-advance {
+        cursor: pointer;
+      }
+      .dialog-header-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      .dialog-speaker-group {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .dialog-portrait {
+        width: 32px;
+        height: 32px;
+        image-rendering: pixelated;
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(106, 169, 255, 0.35);
+        padding: 2px;
+        flex-shrink: 0;
+      }
+      .dialog-portrait.hidden {
+        display: none;
+      }
+      .dialog-speaker {
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--accent-gold);
+      }
+      .dialog-page-indicator {
+        font-size: 12px;
+        color: var(--text-muted);
+        font-family: 'JetBrains Mono', ui-monospace, monospace;
+      }
+      .dialog-body {
+        font-size: 14px;
+        line-height: 1.6;
+        color: var(--text-primary);
+        white-space: pre-line;
+      }
+      .dialog-key-pill {
+        display: inline-block;
+        padding: 0 6px;
+        margin: 0 1px;
+        border-radius: 4px;
+        font-family: 'JetBrains Mono', ui-monospace, monospace;
+        font-size: 12.5px;
+        font-weight: 700;
+        color: #fef08a;
+        background: rgba(250, 204, 21, 0.15);
+        border: 1px solid rgba(250, 204, 21, 0.42);
+      }
+      .dialog-actions {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-top: 2px;
+      }
+      .dialog-btn {
+        padding: 7px 14px;
+        border-radius: 6px;
+        border: 1px solid var(--border-color);
+        background: rgba(255, 255, 255, 0.06);
+        color: var(--text-primary);
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .dialog-btn:hover {
+        background: rgba(106, 169, 255, 0.18);
+      }
+      .dialog-btn.selected,
+      .dialog-btn.primary {
+        background: rgba(106, 169, 255, 0.24);
+        border-color: var(--accent);
+        color: #ffffff;
+      }
     </style>
-    <script type="module" crossorigin src="./assets/index-DmNibkIw.js"></script>
+    <script type="module" crossorigin src="./assets/index-B-_nb93R.js"></script>
   </head>
   <body>
     <header>
@@ -1025,6 +1217,33 @@
     </header>
     <main>
       <canvas id="game-canvas" width="800" height="600"></canvas>
+
+      <!-- Slim Non-Blocking Tutorial Objective Bar -->
+      <div id="tutorial-objective-bar" class="hidden" role="region" aria-label="Tutorial Objective">
+        <div class="tutorial-obj-left">
+          <span id="tutorial-objective-step" class="tutorial-obj-step"></span>
+          <span id="tutorial-objective-text"></span>
+        </div>
+        <div class="tutorial-obj-actions">
+          <button type="button" id="tutorial-hint-btn" class="tutorial-bar-btn">? Hint</button>
+          <button type="button" id="tutorial-reset-btn" class="tutorial-bar-btn">Reset Step</button>
+        </div>
+      </div>
+
+      <!-- Reusable Story & Tutorial Pop-Up Dialog Overlay -->
+      <div id="dialog-modal" class="hidden" role="dialog" aria-modal="true" aria-labelledby="dialog-speaker">
+        <div class="modal-card dialog-card">
+          <div class="dialog-header-row">
+            <div class="dialog-speaker-group">
+              <img id="dialog-portrait" class="dialog-portrait hidden" alt="" />
+              <span id="dialog-speaker" class="dialog-speaker"></span>
+            </div>
+            <span id="dialog-page-indicator" class="dialog-page-indicator"></span>
+          </div>
+          <div id="dialog-body" class="dialog-body"></div>
+          <div id="dialog-actions" class="dialog-actions"></div>
+        </div>
+      </div>
 
       <!-- Large Scrollable Log Modal Tab (Open: '/', Close: 'Esc') -->
       <div id="log-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="log-modal-title">
